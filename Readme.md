@@ -1,4 +1,6 @@
 # Arduino Joystick With Force Feedback Library
+# features added by me:
+- adjustable force feedback range (how many bits)
 
 ## Statement
 
