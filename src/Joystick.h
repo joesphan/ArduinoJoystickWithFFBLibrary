@@ -61,21 +61,24 @@
 #define FFB_AXIS_COUNT                     0x02
 #define FORCE_FEEDBACK_MAXGAIN              100
 #define DEG_TO_RAD              ((float)((float)3.14159265359 / 180.0))
-
+/*
+*   J.L 9/10/2020
+*   changed from uint8_t to uint32_t
+*/
 struct Gains{
-    uint8_t totalGain         = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t constantGain      = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t rampGain          = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t squareGain        = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t sineGain          = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t triangleGain      = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t sawtoothdownGain  = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t sawtoothupGain    = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t springGain        = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t damperGain        = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t inertiaGain       = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t frictionGain      = FORCE_FEEDBACK_MAXGAIN;
-	uint8_t customGain        = FORCE_FEEDBACK_MAXGAIN;
+    uint32_t totalGain         = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t constantGain      = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t rampGain          = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t squareGain        = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t sineGain          = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t triangleGain      = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t sawtoothdownGain  = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t sawtoothupGain    = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t springGain        = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t damperGain        = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t inertiaGain       = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t frictionGain      = FORCE_FEEDBACK_MAXGAIN;
+	uint32_t customGain        = FORCE_FEEDBACK_MAXGAIN;
 };
 
 struct EffectParams{
@@ -140,6 +143,12 @@ private:
 	int16_t                  _brakeMaximum = JOYSTICK_DEFAULT_SIMULATOR_MAXIMUM;
 	int16_t                  _steeringMinimum = JOYSTICK_DEFAULT_SIMULATOR_MINIMUM;
 	int16_t                  _steeringMaximum = JOYSTICK_DEFAULT_SIMULATOR_MAXIMUM;
+    
+    /*  J.L 9/10/2020
+    *   range of force feedback, default is 9 bit (-255 to 255)
+    *   can be set using joystick.setFFBRange(int range)
+    */
+    int16_t _FFBRange = 255;
 
 	uint8_t                  _hidReportId;
 	uint8_t                  _hidReportSize; 
@@ -191,6 +200,14 @@ public:
 	void end();
 	
 	// Set Range Functions
+    /*  J.L 9/10/2020
+    *   setFFBRange sets the force feedback bit depth
+    */
+    inline void setFFBRange(int16_t range)
+	{
+		_FFBRange = range;
+	}
+    
 	inline void setXAxisRange(int16_t minimum, int16_t maximum)
 	{
 		_xAxisMinimum = minimum;
