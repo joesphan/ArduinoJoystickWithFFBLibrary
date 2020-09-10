@@ -41,6 +41,9 @@
 #define JOYSTICK_INCLUDE_BRAKE       B00001000
 #define JOYSTICK_INCLUDE_STEERING    B00010000
 
+  
+
+
 Joystick_::Joystick_(
 	uint8_t hidReportId,
 	uint8_t joystickType,
@@ -479,6 +482,7 @@ Joystick_::Joystick_(
     }
 }
 
+
 void Joystick_::begin(bool initAutoSendState)
 {
 	_autoSendState = initAutoSendState;
@@ -538,7 +542,9 @@ int32_t Joystick_::getEffectForce(volatile TEffectState& effect,Gains _gains,Eff
 	    effect.elapsedTime = (uint64_t)millis() - effect.startTime;
 		return force;
 }
-
+/*  J.L 9/10/2020
+*   modified ffb range to depend on the variable '_FFBRange'
+*/
 
 void Joystick_::forceCalculator(int32_t* forces) {
     forces[0] = 0;
@@ -578,8 +584,8 @@ void Joystick_::forceCalculator(int32_t* forces) {
 	    }
 	forces[0] = (int32_t)((float)1.00 * forces[0] * m_gains[0].totalGain / 10000); // each effect gain * total effect gain = 10000
 	forces[1] = (int32_t)((float)1.00 * forces[1] * m_gains[1].totalGain / 10000); // each effect gain * total effect gain = 10000
-	forces[0] = constrain(forces[0], -255, 255);
-	forces[1] = constrain(forces[1], -255, 255);
+	forces[0] = constrain(forces[0], -_FFBRange, _FFBRange);
+	forces[1] = constrain(forces[1], -_FFBRange, _FFBRange);
 }
 
 int32_t Joystick_::ConstantForceCalculator(volatile TEffectState& effect) 
