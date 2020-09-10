@@ -1,5 +1,5 @@
 # Arduino Joystick With Force Feedback Library
-# features added by me:
+# features added by me (J.L):
 - adjustable force feedback range (how many bits)
 
 ## Statement
@@ -84,7 +84,18 @@ void setup{
 }
 
 ```
-
+### 2.5 (optional) Set the FFB range
+For normal 9 bit operation (-255 to 255), this function does not need to be called
+If more than 9 bits of force feedback is desired, call in setup:
+```cpp
+  Joystick.setFFBRange(2048);
+  //for 12 bit (-11bit to 11 bit) operation
+```
+The gains structure must be modified as well:
+```cpp
+  numBits = 11;		//11 bits
+  mygains[0].totalGain = 100 * (numBits - 3);	//100 signifies 8 bits. 800 gets 11 bits
+```
 
 ### 3.Set the parameters of spring effect, damper effect, inertia effect and friction effect through the struct and the interface as following:
 
